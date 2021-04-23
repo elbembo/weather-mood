@@ -4,7 +4,7 @@
   "description": "trianing",
   "main": "server.js",
   "scripts": {
-    "start": "test"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",

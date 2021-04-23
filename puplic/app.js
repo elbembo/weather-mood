@@ -45,9 +45,7 @@ function lodaing(con = true) {
  */
 const generateJornal = async (e) => {
     lodaing(true)
-    const audio = document.getElementById("stormAudio");
     const zipCode = document.getElementById('zip').value;
-    const feelings = document.getElementById('feelings').value;
 
     getTemperature(baseURL + "zip=" + zipCode + ',us' + key)//no need to put a key here but we have to follow Project Rubric
         .then((data) => {
@@ -59,29 +57,6 @@ const generateJornal = async (e) => {
                         updateUI()
                     }).then(() => {
                         lodaing(false)
-                        // funny function
-                        if (feelings.toUpperCase().trim() === "STORM") {
-                            document.body.style.backgroundImage = `url('./images/Thunderstorm.jpg')`
-                            stormAnimation = {
-                                t1: setInterval(function () {
-                                    app.classList.toggle("storm");
-                                }, 275),
-                                t2: setInterval(function () {
-                                    app.classList.toggle("storm");
-                                }, 800)
-                                ,
-                                t3: setInterval(function () {
-                                    app.classList.toggle("storm");
-                                }, 1200)
-                            }
-                            audio.play();
-                        } else {
-                            clearInterval(stormAnimation.t1)
-                            clearInterval(stormAnimation.t2)
-                            clearInterval(stormAnimation.t3)
-                            app.classList.remove("storm");
-                            audio.pause();
-                        }
                     })
 
             } else {
@@ -125,6 +100,9 @@ const postData = async (url = '', data = {}) => {
 
 // Update user interface
 const updateUI = async (userData) => {
+    const audio = document.getElementById("stormAudio");
+    const zipCode = document.getElementById('zip').value;
+    const feelings = document.getElementById('feelings').value;
     const request = await fetch('/entry');
     try {
         const projectData = await request.json();
@@ -143,6 +121,30 @@ const updateUI = async (userData) => {
             top: document.getElementById('entryHolder').offsetTop,
             behavior: 'smooth'
         });
+        // just for fun
+        if (feelings.toUpperCase().trim() === "STORM") {
+            document.body.style.backgroundImage = `url('./images/Thunderstorm.jpg')`
+            stormAnimation = {
+                t1: setInterval(function () {
+                    app.classList.toggle("storm");
+                }, 275),
+                t2: setInterval(function () {
+                    app.classList.toggle("storm");
+                }, 800)
+                ,
+                t3: setInterval(function () {
+                    app.classList.toggle("storm");
+                }, 1200)
+            }
+            audio.play();
+        } else {
+            clearInterval(stormAnimation.t1)
+            clearInterval(stormAnimation.t2)
+            clearInterval(stormAnimation.t3)
+            app.classList.remove("storm");
+            audio.pause();
+        }
+
     }
     catch (error) {
         console.log('error', error);
