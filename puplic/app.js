@@ -3,6 +3,7 @@ const app = document.querySelector('#app');
 const radioBtn = document.querySelectorAll('input[type="radio"]');
 const loadungUI = document.querySelector('#loading');
 const baseURL = '/api/weather?';
+
 const key = '';//for securty reason we moved the privte key to server.js 
 let weather = {};
 let fahrenheit = false;
@@ -43,6 +44,35 @@ function lodaing(con = true) {
 /**
  * basic functions
  */
+// Async POST
+const postData = async (url = '', data = {}) => {
+    const postRequest = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    try {
+        const newData = await postRequest.json();
+        return newData;
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+// Async GET
+const getTemperature = async (url = '') => {
+    const response = await fetch(url)
+    try {
+        weather = await response.json();
+        return weather;
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
 const generateJornal = async (e) => {
     lodaing(true)
     const zipCode = document.getElementById('zip').value;
@@ -66,41 +96,9 @@ const generateJornal = async (e) => {
         })
 
 }
-
-// Async GET
-const getTemperature = async (url = '') => {
-    const response = await fetch(url)
-    try {
-        weather = await response.json();
-        return weather;
-    }
-    catch (error) {
-        console.error(error);
-    }
-}
-
-// Async POST
-const postData = async (url = '', data = {}) => {
-    const postRequest = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
-    try {
-        const newData = await postRequest.json();
-        return newData;
-    }
-    catch (error) {
-        console.error(error);
-    }
-}
-
 // Update user interface
 const updateUI = async (userData) => {
-    const audio = document.getElementById("stormAudio");
+    
     const request = await fetch('/entry');
     try {
         const projectData = await request.json();
@@ -134,12 +132,14 @@ const updateUI = async (userData) => {
                     app.classList.toggle("storm");
                 }, 1200)
             }
+            const audio = document.getElementById("stormAudio");
             audio.play();
         } else {
             clearInterval(stormAnimation.t1)
             clearInterval(stormAnimation.t2)
             clearInterval(stormAnimation.t3)
             app.classList.remove("storm");
+            const audio = document.getElementById("stormAudio");
             audio.pause();
         }
 
@@ -148,6 +148,7 @@ const updateUI = async (userData) => {
         console.log('error', error);
     }
 }
+postData('/addEntry', {temperature: '', date: '', feeling: ''  }) // empty old data from server when refresh
 document.getElementById('generate').addEventListener('click', generateJornal);
 
 radioBtn.forEach((ele) => {
