@@ -15,7 +15,7 @@ This project use asynchronous , Web API and user data to dynamically update the 
   ```
 - Start project
   ```
-  node start
+  npm start
   ```
 - Open [http://localhost:3000](http://localhost:3000)
 
