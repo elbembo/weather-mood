@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Journal</title>
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/images/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1">
+
+  <img style="display: none;" src="./images/Thunderstorm.jpg" alt="" srcset="">
+  <img style="display: none;" src="./images/Thunderstorm2.jpg" alt="" srcset="">
+
+</head>
+
+<body>
+  <div id="loading">
+    <div class="termo">
+      <img src="./images/termo.gif" alt="">
+      loading...
+    </div>
+  </div>
+  <audio id="stormAudio" style="display: none;" loop>
+    <source src="./sound/thunder_effect.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <div id="app">
+    <div class="holder headline">
+      Weather Journal App
+    </div>
+    <div class="holder weather-ifo">
+      <div class="forcast-icon">
+        <div class="temptyp">
+          <input type="radio" id="celsius" name="tempTyp" value="celsius" checked>
+          <label for="celsius">C</label>
+          <span>/</span>
+          <input type="radio" id="fahrenheit" name="tempTyp" value="fahrenheit">
+          <label for="fahrenheit">F</label>
+        </div>
+        <img src="" alt="">
+        
+        <div class="weather-temp">
+          <h2 data-content="° F"></h2>
+        </div>
+      </div>
+
+      <div class="city-name">
+        <h3></h3>
+      </div>
+
+    </div>
+    <div class="holder zip">
+      <label for="zip">Enter Zipcode here</label>
+      <input type="number" id="zip" placeholder="enter zip code here" tabindex="1" autofocus>
+    </div>
+    <div class="holder feel">
+      <label for="feelings">How are you feeling today?</label>
+      <textarea tabindex="2" class="myInput" id="feelings" placeholder="Enter your feelings here" rows="9"
+        cols="50"></textarea>
+      <button tabindex="3" id="generate" type="submit"> Generate </button>
+    </div>
+    <div class="holder entry">
+      <div class="title">Most Recent Entry</div>
+      <div id="entryHolder">
+        <div id="temp"></div>
+        <div id="date"></div>
+
+        <div id="content"></div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    Source control : <a href="#"> gitrgub </a>
+  </footer>
+  <script src="app.js?v=1.3" type="text/javascript"></script>
+
+</body>
+
+</html>
