@@ -46,7 +46,7 @@ function lodaing(con = true) {
 const generateJornal = async (e) => {
     lodaing(true)
     const zipCode = document.getElementById('zip').value;
-
+    const feelings = document.getElementById('feelings').value;
     getTemperature(baseURL + "zip=" + zipCode + ',us' + key)//no need to put a key here but we have to follow Project Rubric
         .then((data) => {
 
@@ -54,7 +54,7 @@ const generateJornal = async (e) => {
                 // Add data to POST request
                 postData('/addEntry', { temperature: data.main.temp, date: newDate, feeling: feelings })
                     .then((data) => {
-                        updateUI()
+                        updateUI(data)
                     }).then(() => {
                         lodaing(false)
                     })
@@ -101,8 +101,6 @@ const postData = async (url = '', data = {}) => {
 // Update user interface
 const updateUI = async (userData) => {
     const audio = document.getElementById("stormAudio");
-    const zipCode = document.getElementById('zip').value;
-    const feelings = document.getElementById('feelings').value;
     const request = await fetch('/entry');
     try {
         const projectData = await request.json();
@@ -122,7 +120,7 @@ const updateUI = async (userData) => {
             behavior: 'smooth'
         });
         // just for fun
-        if (feelings.toUpperCase().trim() === "STORM") {
+        if (projectData.feeling.toUpperCase().trim() === "STORM") {
             document.body.style.backgroundImage = `url('./images/Thunderstorm.jpg')`
             stormAnimation = {
                 t1: setInterval(function () {
