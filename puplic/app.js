@@ -2,33 +2,40 @@
 const app = document.querySelector('#app');
 const radioBtn = document.querySelectorAll('input[type="radio"]');
 const loadungUI = document.querySelector('#loading');
-const baseURL = '/api/weather?';
+const baseURL = 'https://api.openweathermap.org/data/2.5/weather?';
 
-const key = '';//for securty reason we moved the privte key to server.js 
+const apiKey = '&appid=ba960daefc10c56dc6f7608b7d568c3e'
 let weather = {};
 let fahrenheit = false;
-let temperature = { temp: 0, sin: "°F" }
+let tempUnit = '&units=metric';
+let tempSin = '°C';
+//let temperature = { temp: 0, sin: "°F" }
 let stormAnimation = { t1: null, t2: null, t3: null }
 
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
+let newDate = d.getMonth() +1+ '.' + d.getDate() + '.' + d.getFullYear();
 /**
  * helper functions
  */
-const temperatureConvertor = (temp) => {
+/* const temperatureConvertor = (temp) => {
     if (fahrenheit) {
         return temperature = { temp: Math.floor((temp - 273.15) * 9 / 5 + 32), sin: '°F' }
     }
     return temperature = { temp: Math.floor(temp - 273.15), sin: '°C' }
-}
+} */
 function changeTempSin(e) {
-    if (e.target.value == 'fahrenheit')
+    if (e.target.value == 'fahrenheit') {
+        tempUnit = '&units=imperial';
+        tempSin = '°F';
         fahrenheit = true;
-    else
+    } else {
+        tempUnit = '&units=metric';
+        tempSin = '°C';
         fahrenheit = false;
-    updateUI()
+    }
+    generateJornal()
 }
 function lodaing(con = true) {
     if (con) {
@@ -76,8 +83,8 @@ const getTemperature = async (url = '') => {
 const generateJornal = async (e) => {
     lodaing(true)
     const zipCode = document.getElementById('zip').value;
-    const feelings = document.getElementById('feelings').value;
-    getTemperature(baseURL + "zip=" + zipCode + ',us' + key)//no need to put a key here but we have to follow Project Rubric
+    const feelings = document.getElementById('feelings').value ;
+    getTemperature(baseURL + "zip=" + zipCode + ',us' + apiKey + tempUnit)
         .then((data) => {
 
             if (data.cod == "200") {// from Openweather.com API . 200 mean we get the right data 
@@ -98,18 +105,18 @@ const generateJornal = async (e) => {
 }
 // Update user interface
 const updateUI = async (userData) => {
-    
+
     const request = await fetch('/entry');
     try {
         const projectData = await request.json();
         document.getElementById('date').innerHTML = projectData.date;
-        document.getElementById('temp').innerHTML = temperatureConvertor(projectData.temperature).temp;
-        document.getElementById('temp').dataset.content = temperatureConvertor(projectData.temperature).sin
+        document.getElementById('temp').innerHTML = Math.floor(projectData.temperature);
+        document.getElementById('temp').dataset.content = tempSin
         document.getElementById('content').innerHTML = projectData.feeling;
         const weatherIcon = app.querySelector('.forcast-icon img')
         app.querySelector('.city-name h3').textContent = weather.name
-        app.querySelector('.weather-temp h2').innerHTML = `<span>${weather.weather[0].main}</span>${temperatureConvertor(weather.main.temp).temp}`
-        app.querySelector('.weather-temp h2').dataset.content = temperatureConvertor(weather.main.temp).sin
+        app.querySelector('.weather-temp h2').innerHTML = `<span>${weather.weather[0].main}</span>${Math.floor(weather.main.temp)}`
+        app.querySelector('.weather-temp h2').dataset.content = tempSin
 
         weatherIcon.src = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`
         document.body.style.backgroundImage = `url('./images/${weather.weather[0].main}.jpg')`
@@ -148,7 +155,7 @@ const updateUI = async (userData) => {
         console.log('error', error);
     }
 }
-postData('/addEntry', {temperature: '', date: '', feeling: ''  }) // empty old data from server when refresh
+postData('/addEntry', { temperature: '', date: '', feeling: '' }) // empty old data from server when refresh
 document.getElementById('generate').addEventListener('click', generateJornal);
 
 radioBtn.forEach((ele) => {
@@ -167,7 +174,7 @@ const geoFindMe = () => {
          * get a weather by user loccation
          */
         lodaing(true)
-        getTemperature(baseURL + `lat=${latitude}&lon=${longitude}` + key).then(() => {
+        getTemperature(baseURL + `lat=${latitude}&lon=${longitude}` + apiKey + tempUnit).then(() => {
             updateUI();
         }).then(lodaing(false))
 

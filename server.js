@@ -42,6 +42,7 @@ app.use('/api/', function (req, res, next) {
 app.get('/entry', sendData)
 
 function sendData (req, res) {
+    console.log(req.headers);
     res.send(projectData)
 }
 //handel post requst from cilent
