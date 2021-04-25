@@ -15,7 +15,7 @@ let stormAnimation = { t1: null, t2: null, t3: null }
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth() +1+ '.' + d.getDate() + '.' + d.getFullYear();
+let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
 /**
  * helper functions
  */
